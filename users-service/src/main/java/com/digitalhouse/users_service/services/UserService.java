@@ -1,15 +1,17 @@
 package com.digitalhouse.users_service.services;
 
+
 import com.digitalhouse.users_service.model.dtos.UserRequest;
 import com.digitalhouse.users_service.model.dtos.UserResponse;
 import com.digitalhouse.users_service.model.entities.User;
 import com.digitalhouse.users_service.repositories.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -17,32 +19,31 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AccountService accountService;
 
 //CREATE USER
-    public void addUser(UserRequest userRequest) {
+    public void createUser(@Valid UserRequest userRequest){
+
+        Optional<User> user1 = userRepository.findByEmail(userRequest.getEmail());
+
+        if(user1.isPresent()) {
+            log.error("Error al crear un usuario que ya existe");
+            throw new IllegalArgumentException("El usuario con email: " + userRequest.getEmail() + "ya existe" );
+        }
         var user = User.builder()
                 .firstname(userRequest.getFirstname())
-                .lastname(userRequest.getLastname())
                 .dni(userRequest.getDni())
                 .email(userRequest.getEmail())
                 .password(userRequest.getPassword()) //ENCRIPT PASSWORD
                 .phone(userRequest.getPhone())
                 .build();
+
         userRepository.save(user);
-        log.info("User added: {}", user);
-    }
+        accountService.createAccount(user);
+        log.info("User created: {}", user);
+        }
 
-    //DELETE USER
-   /* public void deleteUser(Long id) throws ResourceNotFoundException {
-           Optional<User> user = userRepository.findById(id);
-            if (user.isEmpty())
 
-                throw new ResourceNotFoundException("No existe el usuario con id: " + id);
-
-            userRepository.deleteById(id);
-
-            log.info("Se elimina el usuario con Id: " + id);
-        }*/
 
 //LIST ALL USERS
     public List<UserResponse> getAllUsers() {

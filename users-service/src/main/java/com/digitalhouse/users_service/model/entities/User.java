@@ -25,6 +25,9 @@ public class User {
     private String password;
     private String phone;
 
+    @OneToOne(mappedBy = "user")
+    private Account account;
+
     @Override
     public String toString() {
         return "User{" +

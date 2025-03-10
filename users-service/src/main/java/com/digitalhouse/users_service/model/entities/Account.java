@@ -24,6 +24,11 @@ public class Account {
     private String alias;
     private String name;
 
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private User user;
+
     @Override
     public String toString() {
         return "User{" +
