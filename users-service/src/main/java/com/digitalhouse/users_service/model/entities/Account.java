@@ -18,15 +18,14 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
-    private Long userId;
     private BigDecimal balance;
-    private double cvu;
+    private String cvu;
     private String alias;
     private String name;
 
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @Override
@@ -37,7 +36,6 @@ public class Account {
                 ", banlace='" + balance + '\'' +
                 '}';
     }
-
 }
 
 

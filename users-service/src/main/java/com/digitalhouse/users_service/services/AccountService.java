@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
 import java.math.BigDecimal;
@@ -27,23 +28,25 @@ public class AccountService {
     //CREATE ACCOUNT
     public void createAccount(User user) {
         var account = Account.builder()
-                .userId(user.getId())
+                .user(user)
                 .balance(BigDecimal.ZERO)
-                .cvu(createCvu())
+                .cvu(generateCvu())
                 .alias(generateAlias())
                 .name(user.getFirstname())
                 .build();
+
         accountRepository.save(account);
         log.info("Account created: {}", account);
     }
 
 
-    public double createCvu(){
-        double cvu=0;
+    public static String generateCvu() {
+        SecureRandom random = new SecureRandom();
+        StringBuilder cvu = new StringBuilder(22);
         for (int i = 0; i < 22; i++) {
-            cvu += Math.floor(Math.random() * 10);
+            cvu.append(random.nextInt(10)); // Genera un número entre 0 y 9
         }
-        return cvu;
+        return cvu.toString();
     }
 
     public List<String> getWordsList() {

@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/users")
@@ -16,7 +16,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping
+    /*@GetMapping
     @RequestMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<UserResponse> getAllUsers() {
@@ -27,5 +27,10 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> editUser(@RequestBody UserResponse userResponse) throws Exception{
         return null;
+    }*/
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> searchById(@PathVariable Long id){
+        UserResponse userResponse = userService.getUserById(id);
+       return ResponseEntity.status(HttpStatus.OK).body(userResponse);
     }
 }

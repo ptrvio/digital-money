@@ -15,6 +15,5 @@ public class UserResponse {
     private String lastname;
     private String dni;
     private String email;
-    private String password;
     private String phone;
 }

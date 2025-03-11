@@ -17,14 +17,18 @@ public class UserRequest {
 
     @NotBlank(message = "El nombre es obligatorio")
     @Size(min = 3, max =20, message = "El nombre debe tener entre 3 y 20 caracteres")
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$",
+            message = "El nombre solo puede contener letras y espacios")
     private String firstname;
 
     @NotBlank(message = "El apellido es obligatorio")
     @Size(min = 3, max =20, message = "El apellido debe tener entre 3 y 20 caracteres")
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$",
+            message = "El nombre solo puede contener letras y espacios")
     private String lastname;
 
     @NotBlank(message = "El dni es obligatorio")
-    @Size(min = 8, max =8, message = "El dni debe tener 8 caracteres")
+    @Pattern(regexp = "^[0-9]{7,8}$", message = "El DNI debe tener 7 u 8 dígitos numéricos")
     private String dni;
 
     @NotBlank(message = "El email es obligatorio")
@@ -39,6 +43,7 @@ public class UserRequest {
     )
     private String password;
 
-    @Size(min = 10, max = 20, message = "El telefono debe tener entre 10 y 20 caracteres")
+    @NotBlank(message = "El telefono no puede estar vacío")
+    @Pattern(regexp = "^[0-9]{10,20}$", message = "El DNI debe tener 7 u 8 dígitos numéricos")
     private String phone;
 }
